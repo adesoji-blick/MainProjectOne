@@ -70,7 +70,7 @@
   tasks:
     - name: check that monitoring_install.sh exits
       stat:
-        path: /home/ansible/
+        path: '/home/ansible/monitoring_install.sh'
       register: stat_result
 
     - name: copy monitoring installation script
@@ -80,18 +80,18 @@
         owner: ansible
         group: ansible
         mode: 0755
-      when: not stat_result.stat.exists  
+      when: stat_result.stat.exists == False  
   
     - name: Run the monitoring installation script
       command: '/home/ansible/monitoring_install.sh'
-      when: not stat_result.stat.exists
+      when: stat_result.stat.exists == False
 
 - hosts: all
   become: True
   tasks:
     - name: check that exporter_install.sh exits
       stat:
-        path: /home/ansible/
+        path: /home/ansible/exporter_install.sh
       register: stat_result
 
     - name: copy exporter installation script
@@ -101,11 +101,13 @@
         owner: ansible
         group: ansible
         mode: 0755
-      when: not stat_result.stat.exists  
+      when: stat_result_2.stat.exists == False
+  
   
     - name: Run the monitoring installation script
       command: '/home/ansible/exporter_install.sh'
-      when: not stat_result.stat.exists
+      when: stat_result_2.stat.exists == False
+
          
 
 
