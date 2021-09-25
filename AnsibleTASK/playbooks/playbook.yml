@@ -68,6 +68,11 @@
 - hosts: tag_Name_monitor_server
   become: True
   tasks:
+    - name: check that monitoring_install.sh exits
+      stat:
+        path: /home/ansible/
+      register: stat_result
+
     - name: copy monitoring installation script
       template:
         src: /home/ansible/MainProjectOne/AnsibleTASK/monitoring_install.sh
@@ -75,13 +80,20 @@
         owner: ansible
         group: ansible
         mode: 0755
+      when: not stat_result.stat.exists  
   
     - name: Run the monitoring installation script
       command: '/home/ansible/monitoring_install.sh'
+      when: not stat_result.stat.exists
 
 - hosts: all
   become: True
   tasks:
+    - name: check that exporter_install.sh exits
+      stat:
+        path: /home/ansible/
+      register: stat_result
+
     - name: copy exporter installation script
       template:
         src: /home/ansible/MainProjectOne/AnsibleTASK/exporter_install.sh
@@ -89,9 +101,11 @@
         owner: ansible
         group: ansible
         mode: 0755
+      when: not stat_result.stat.exists  
   
     - name: Run the monitoring installation script
       command: '/home/ansible/exporter_install.sh'
+      when: not stat_result.stat.exists
          
 
 
