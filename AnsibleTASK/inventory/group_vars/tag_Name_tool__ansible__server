@@ -2,3 +2,4 @@ node_type: Tool-Ansible
 node_env: 
 
 packages_to_install:
+  - docker
