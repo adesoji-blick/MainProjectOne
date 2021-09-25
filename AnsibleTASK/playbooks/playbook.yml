@@ -92,7 +92,7 @@
     - name: check that exporter_install.sh exits
       stat:
         path: /home/ansible/exporter_install.sh
-      register: stat_result
+      register: stat_result_2
 
     - name: copy exporter installation script
       template:
